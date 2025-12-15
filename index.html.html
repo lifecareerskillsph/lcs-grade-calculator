@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life and Career Skills Grade 11 - Quarter Grade Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-gradient-start: rgba(36, 181, 200, 0.85);
+            --bg-gradient-end: rgba(144, 134, 184, 0.85);
+            --bg-overlay: rgba(255, 255, 255, 0.1);
+            --container-bg: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #34495e;
+            --text-muted: #7f8c8d;
+            --border-color: #e0e0e0;
+            --section-bg: #f8f9fa;
+            --section-ww-bg: #f0f9ff;
+            --section-pt-bg: #fef3f2;
+            --section-qa-bg: #faf5ff;
+            --input-bg: white;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body.dark-mode {
+            --bg-gradient-start: rgba(20, 30, 48, 0.95);
+            --bg-gradient-end: rgba(30, 20, 45, 0.95);
+            --bg-overlay: rgba(0, 0, 0, 0.3);
+            --container-bg: #1a1a2e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --text-muted: #8a8a8a;
+            --border-color: #2a2a3e;
+            --section-bg: #16213e;
+            --section-ww-bg: #1a2332;
+            --section-pt-bg: #2a1f1e;
+            --section-qa-bg: #221e2e;
+            --input-bg: #0f0f1e;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%), 
+                        linear-gradient(to bottom, var(--bg-overlay), rgba(255, 255, 255, 0.05));
+            background-blend-mode: normal, overlay;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        body.dark-mode {
+            color: var(--text-primary);
+        }
+
+        .calculator-container {
+            background: var(--container-bg);
+            border-radius: 20px;
+            box-shadow: 0px 4px 12px var(--shadow-color), 0px 8px 24px var(--shadow-color);
+            max-width: 100%;
+            width: 100%;
+            padding: 25px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        @media (min-width: 481px) {
+            .calculator-container {
+                max-width: 480px;
+                padding: 35px;
+                border-radius: 24px;
+            }
+        }
+
+        .header {
+            text-align: left;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #24B5C8;
+        }
+
+        @media (max-width: 480px) {
+            .header > div:first-child {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 10px;
+            }
+        }
+
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 22px;
+            margin: 0;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+        }
+
+        @media (min-width: 481px) {
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+
+        .instruction-box {
+            background: #f0f9ff;
+            border: 2px solid #bfe3f0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 25px;
+        }
+
+        .instruction-box ol {
+            padding-left: 20px;
+        }
+
+        .instruction-box li {
+            margin-bottom: 8px;
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #7f8c8d;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: #24B5C8;
+            background: rgba(36, 181, 200, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #24B5C8;
+            border-bottom-color: #24B5C8;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .quarter-selector {
+            background: var(--section-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0px 2px 6px var(--shadow-color);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .quarter-selector.scrolled {
+            box-shadow: 0px 4px 12px var(--shadow-color);
+        }
+
+        .quarter-selector label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-right: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .quarter-selector select {
+            padding: 10px 18px;
+            font-size: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .quarter-selector select:hover {
+            border-color: #24B5C8;
+            background: var(--section-bg);
+        }
+
+        .quarter-selector select:focus {
+            outline: none;
+            border-color: #24B5C8;
+            box-shadow: 0 0 0 3px rgba(36, 181, 200, 0.1);
+        }
+
+        .section {
+            margin-bottom: 25px;
+            background: var(--section-bg);
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 5px solid #24B5C8;
+            box-shadow: 0px 2px 8px var(--shadow-color);
+            transition: background 0.3s ease;
+        }
+
+        .section.ww-section {
+            background: var(--section-ww-bg);
+            border-left-color: #24B5C8;
+        }
+
+        .section.pt-section {
+            background: var(--section-pt-bg);
+            border-left-color: #F28C28;
+        }
+
+        .section.qa-section {
+            background: var(--section-qa-bg);
+            border-left-color: #9086B8;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 17px;
+        }
+
+        .section-weight {
+            background: #24B5C8;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .input-group label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.3s;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #24B5C8;
+            box-shadow: 0 0 0 3px rgba(36, 181, 200, 0.1);
+        }
+
+        .input-group input.error {
+            border-color: #e74c3c;
+            background-color: #fff5f5;
+        }
+
+        .error-text {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .error-text.show {
+            display: block;
+        }
+
+        .long-test-controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        .long-test-controls button {
+            padding: 8px 16px;
+            border: 2px solid #24B5C8;
+            background: white;
+            color: #24B5C8;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .long-test-controls button:hover {
+            background: #24B5C8;
+            color: white;
+        }
+
+        .long-test-controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .long-test-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .long-test-item .test-number {
+            min-width: 120px;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        .long-test-item input {
+            width: 100px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .long-test-item button {
+            padding: 6px 12px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .long-test-item button:hover {
+            background: #c0392b;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #24B5C8 0%, #9086B8 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            box-shadow: 0px 4px 12px rgba(36, 181, 200, 0.3);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(36, 181, 200, 0.4);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        .pdf-btn {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            color: #24B5C8;
+            border: 2px solid #24B5C8;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .pdf-btn:hover {
+            background: #24B5C8;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(36, 181, 200, 0.3);
+        }
+
+        .result-section {
+            margin-top: 25px;
+            background: linear-gradient(135deg, #24B5C8 0%, #9086B8 100%);
+            padding: 22px;
+            border-radius: 16px;
+            color: white;
+            display: none;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            margin-top: 15px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .final-grade-display {
+            background: white;
+            color: #2c3e50;
+            padding: 28px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .final-grade-number {
+            font-size: 52px;
+            font-weight: 700;
+            color: #24B5C8;
+            line-height: 1;
+            margin: 12px 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .final-grade-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .final-grade-descriptor {
+            font-size: 16px;
+            color: #34495e;
+            font-weight: 600;
+            margin-top: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .result-label {
+            font-weight: 500;
+        }
+
+        .result-value {
+            font-weight: 600;
+        }
+
+        .error-message {
+            background: #fff5f5;
+            border: 2px solid #feb2b2;
+            color: #c53030;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .calculator-container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+
+            .calculate-btn {
+                display: none;
+            }
+
+            .long-test-controls {
+                display: none;
+            }
+
+            .long-test-item button {
+                display: none;
+            }
+
+            /* Hide footer when printing */
+            body > div:last-child {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .calculator-container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header h2 {
+                font-size: 16px;
+            }
+
+            .input-group input {
+                font-size: 16px;
+            }
+
+            .final-grade-number {
+                font-size: 42px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="header">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h1>Life and Career Skills Grade 11 — Grade Calculator</h1>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button onclick="toggleDarkMode()" id="dark-mode-toggle" style="background: #e0e0e0; color: #5a5a5a; padding: 6px 12px; border: none; border-radius: 12px; font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s;">
+                        🌙 Dark
+                    </button>
+                    <span style="background: #e0e0e0; color: #5a5a5a; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif;">Teacher Tool v1.0</span>
+                </div>
+            </div>
+            <p style="font-size: 13px; color: #7f8c8d; margin-top: 8px; font-family: 'Inter', sans-serif;">
+                This calculator helps you estimate your grade based on your current scores.
+            </p>
+        </div>
+
+        <!-- Instruction Box -->
+        <div class="instruction-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3 style="font-family: 'Poppins', sans-serif; font-size: 15px; color: #2c3e50; margin: 0;">Quick Instructions</h3>
+                <button onclick="toggleInstructions()" style="background: none; border: none; color: #24B5C8; cursor: pointer; font-size: 14px; font-weight: 600; font-family: 'Inter', sans-serif;" id="toggle-btn">
+                    Show ▼
+                </button>
+            </div>
+            <div id="instructions-content" style="display: none; margin-top: 15px;">
+                <ol style="margin-left: 20px; line-height: 1.8; font-size: 14px; font-family: 'Inter', sans-serif; color: #34495e;">
+                    <li>Enter your raw scores for each category (Written Works, Performance Tasks, Quarterly Assessment).</li>
+                    <li>You may adjust the total possible points depending on your class requirements.</li>
+                    <li>Click "Calculate Estimated Grade" to generate your estimated grade.</li>
+                    <li>The calculator will automatically transmute your initial grade (raw weighted average) into the final grade using the official DepEd transmutation table.</li>
+                    <li>Use the result as a guide for tracking your performance.</li>
+                </ol>
+                <div style="background: #f0f9ff; border-left: 4px solid #24B5C8; padding: 12px; margin-top: 15px; border-radius: 6px; font-size: 13px;">
+                    <strong>About Transmutation:</strong> Your raw scores are calculated, weighted (WW=25%, PT=50%, QA=25%), then automatically converted to the 60-100 grading scale using DepEd Order No. 8 s. 2015 Appendix B. This is the same process your teacher uses.
+                </div>
+                <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; margin-top: 12px; border-radius: 6px; font-size: 13px;">
+                    <strong>Note:</strong> This is an estimation tool. Always verify with your teacher for official grades.
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" onclick="switchTab('calculator')">Grade Calculator</button>
+            <button class="tab-btn" onclick="switchTab('transcript')">Final Grade</button>
+            <button class="tab-btn" onclick="switchTab('whatif')">What If?</button>
+        </div>
+
+        <!-- Calculator Tab -->
+        <div id="calculator-tab" class="tab-content active">
+
+        <div style="background: white; border: 2px solid #e0e0e0; border-radius: 10px; padding: 14px; margin-bottom: 20px;">
+            <p style="font-size: 13px; color: #5a5a5a; margin: 0; font-family: 'Inter', sans-serif; line-height: 1.6;">
+                <strong>For Students:</strong> Enter your raw scores for each category below. The calculator will automatically compute your estimated quarter grade based on standard grading weights used in DepEd schools.
+            </p>
+        </div>
+
+        <div class="quarter-selector">
+            <label for="quarter-select">Select Quarter:</label>
+            <select id="quarter-select">
+                <option value="1">Quarter 1</option>
+                <option value="2">Quarter 2</option>
+                <option value="3">Quarter 3</option>
+                <option value="4">Quarter 4</option>
+            </select>
+        </div>
+
+        <div class="error-message" id="error-message"></div>
+
+        <!-- Written Works Section -->
+        <div class="section ww-section">
+            <div class="section-header">
+                <span class="section-title">Written Works</span>
+                <span class="section-weight">25%</span>
+            </div>
+            <div class="input-group">
+                <label>Total Points Earned:</label>
+                <input type="number" id="ww-earned" min="0" step="0.01" placeholder="Enter points earned">
+                <span class="error-text" id="ww-earned-error">Points earned cannot exceed total possible points</span>
+            </div>
+            <div class="input-group">
+                <label>Total Possible Points:</label>
+                <input type="number" id="ww-total" min="0" step="0.01" value="25" placeholder="Default: 25">
+                <span class="error-text" id="ww-total-error">Please enter total possible points</span>
+            </div>
+        </div>
+
+        <!-- Performance Tasks Section -->
+        <div class="section pt-section">
+            <div class="section-header">
+                <span class="section-title">Performance Tasks</span>
+                <span class="section-weight">50%</span>
+            </div>
+            <div class="input-group">
+                <label>Total Points Earned:</label>
+                <input type="number" id="pt-earned" min="0" step="0.01" placeholder="Enter points earned">
+                <span class="error-text" id="pt-earned-error">Points earned cannot exceed total possible points</span>
+            </div>
+            <div class="input-group">
+                <label>Total Possible Points:</label>
+                <input type="number" id="pt-total" min="0" step="0.01" value="100" placeholder="Default: 100">
+                <span class="error-text" id="pt-total-error">Please enter total possible points</span>
+            </div>
+        </div>
+
+        <!-- Quarterly Assessment Section -->
+        <div class="section qa-section">
+            <div class="section-header">
+                <span class="section-title">Quarterly Assessment</span>
+                <span class="section-weight">25%</span>
+            </div>
+            <div class="input-group">
+                <label>Points Earned:</label>
+                <input type="number" id="qa-earned" min="0" step="0.01" placeholder="Enter points earned">
+                <span class="error-text" id="qa-earned-error">Points earned cannot exceed total possible points</span>
+            </div>
+            <div class="input-group">
+                <label>Total Possible Points:</label>
+                <input type="number" id="qa-total" min="0" step="0.01" value="60" placeholder="Default: 60">
+                <span class="error-text" id="qa-total-error">Please enter total possible points</span>
+            </div>
+            <p class="note" style="margin-top: 10px;">*Usually 60 points total</p>
+        </div>
+
+        <button class="calculate-btn" onclick="calculateGrade()">Calculate Estimated Grade</button>
+
+        <div class="result-section" id="result-section">
+            <div style="background: rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 13px;">
+                <strong>Grade Computation Process:</strong> Raw scores → Weighted average → Transmuted using DepEd table
+            </div>
+            
+            <div class="result-item">
+                <span class="result-label">Written Works (25%):</span>
+                <span class="result-value" id="ww-result">0.00</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Performance Tasks (50%):</span>
+                <span class="result-value" id="pt-result">0.00</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Quarterly Assessment (25%):</span>
+                <span class="result-value" id="qa-result">0.00</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Initial Grade (Raw):</span>
+                <span class="result-value" id="initial-grade">0.00</span>
+            </div>
+            
+            <div class="final-grade-display">
+                <div class="final-grade-label">Quarter <span id="quarter-display">1</span> Final Grade (Transmuted)</div>
+                <div class="final-grade-number" id="final-grade">0</div>
+                <div class="final-grade-descriptor" id="grade-descriptor">Not Yet Calculated</div>
+                <div style="font-size: 12px; color: #7f8c8d; margin-top: 10px; font-family: 'Inter', sans-serif;">
+                    Automatically transmuted using DepEd DO 8 s. 2015 Table
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF Download Button -->
+        <button class="pdf-btn" onclick="downloadPDF()" id="pdf-btn" style="display: none;">
+            Download PDF Summary
+        </button>
+        
+        </div>
+        <!-- End Calculator Tab -->
+
+        <!-- Transcript Average Tab -->
+        <div id="transcript-tab" class="tab-content">
+            <div style="background: white; border: 2px solid #e0e0e0; border-radius: 10px; padding: 14px; margin-bottom: 20px;">
+                <p style="font-size: 13px; color: #5a5a5a; margin: 0; font-family: 'Inter', sans-serif; line-height: 1.6;">
+                    <strong>For Students:</strong> Enter your quarter grades to see your final grade for the school year. You can enter 1-4 quarters; the calculator will compute the average.
+                </p>
+            </div>
+
+            <div class="section ww-section">
+                <div class="section-header">
+                    <span class="section-title">Final Grade Calculator</span>
+                </div>
+                
+                <div class="input-group">
+                    <label>Quarter 1 Grade:</label>
+                    <input type="number" id="q1-grade" min="60" max="100" step="1" placeholder="Enter Q1 grade (60-100)">
+                </div>
+                <div class="input-group">
+                    <label>Quarter 2 Grade:</label>
+                    <input type="number" id="q2-grade" min="60" max="100" step="1" placeholder="Enter Q2 grade (60-100)">
+                </div>
+                <div class="input-group">
+                    <label>Quarter 3 Grade:</label>
+                    <input type="number" id="q3-grade" min="60" max="100" step="1" placeholder="Enter Q3 grade (60-100)">
+                </div>
+                <div class="input-group">
+                    <label>Quarter 4 Grade:</label>
+                    <input type="number" id="q4-grade" min="60" max="100" step="1" placeholder="Enter Q4 grade (60-100)">
+                </div>
+
+                <button class="calculate-btn" onclick="calculateFinalGrade()">Calculate Final Grade</button>
+
+                <div class="result-section" id="transcript-result" style="margin-top: 25px;">
+                    <div class="final-grade-display">
+                        <div class="final-grade-label">Final Grade (Average of 4 Quarters)</div>
+                        <div class="final-grade-number" id="final-grade-transcript">0</div>
+                        <div class="final-grade-descriptor" id="final-descriptor">Not Yet Calculated</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Transcript Tab -->
+
+        <!-- What If Tab -->
+        <div id="whatif-tab" class="tab-content">
+            <div style="background: white; border: 2px solid #e0e0e0; border-radius: 10px; padding: 14px; margin-bottom: 20px;">
+                <p style="font-size: 13px; color: #5a5a5a; margin: 0; font-family: 'Inter', sans-serif; line-height: 1.6;">
+                    <strong>For Students:</strong> Test different scenarios to see what Performance Task score you need. Enter your current WW and QA scores, then simulate different PT scores to plan ahead.
+                </p>
+            </div>
+
+            <div class="section pt-section">
+                <div class="section-header">
+                    <span class="section-title">What If? Scenario Calculator</span>
+                </div>
+
+                <!-- Current Scores Section -->
+                <div style="background: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #e0e0e0;">
+                    <h3 style="font-family: 'Poppins', sans-serif; font-size: 15px; color: #2c3e50; margin-bottom: 15px;">Your Current Scores</h3>
+                    
+                    <div class="input-group">
+                        <label>Written Works Earned:</label>
+                        <input type="number" id="whatif-ww-earned" min="0" step="0.01" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Written Works Total:</label>
+                        <input type="number" id="whatif-ww-total" min="0" step="0.01" value="25" placeholder="25">
+                    </div>
+                    <div class="input-group">
+                        <label>Quarterly Assessment Earned:</label>
+                        <input type="number" id="whatif-qa-earned" min="0" step="0.01" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Quarterly Assessment Total:</label>
+                        <input type="number" id="whatif-qa-total" min="0" step="0.01" value="60" placeholder="60">
+                    </div>
+                </div>
+
+                <!-- Simulation Section -->
+                <div style="background: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #F28C28;">
+                    <h3 style="font-family: 'Poppins', sans-serif; font-size: 15px; color: #F28C28; margin-bottom: 15px;">Simulate Performance Task Score</h3>
+                    
+                    <div class="input-group">
+                        <label>Performance Task Total Points:</label>
+                        <input type="number" id="whatif-pt-total" min="0" step="0.01" value="100" placeholder="100">
+                    </div>
+                    <div class="input-group">
+                        <label>What if I score (PT Earned):</label>
+                        <input type="number" id="whatif-pt-earned" min="0" step="0.01" placeholder="Enter simulated score">
+                    </div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateWhatIf()">Calculate "What If?" Grade</button>
+
+                <div class="result-section" id="whatif-result" style="margin-top: 25px;">
+                    <div class="result-item">
+                        <span class="result-label">Simulated Quarter Grade:</span>
+                        <span class="result-value" id="whatif-grade">0</span>
+                    </div>
+                    <div class="final-grade-display">
+                        <div class="final-grade-label">Your Grade Would Be</div>
+                        <div class="final-grade-number" id="whatif-final-grade">0</div>
+                        <div class="final-grade-descriptor" id="whatif-descriptor">Not Yet Calculated</div>
+                    </div>
+                </div>
+
+                <!-- Target Grade Helper -->
+                <div style="background: #fff; padding: 15px; border-radius: 12px; margin-top: 20px; border: 2px solid #9086B8;">
+                    <h3 style="font-family: 'Poppins', sans-serif; font-size: 15px; color: #9086B8; margin-bottom: 10px;">Need to Pass (75)?</h3>
+                    <button class="calculate-btn" style="background: linear-gradient(135deg, #9086B8 0%, #A64CA6 100%); margin-top: 10px;" onclick="calculateNeededForGrade(75)">
+                        Calculate Score Needed for 75
+                    </button>
+                </div>
+
+                <div style="background: #fff; padding: 15px; border-radius: 12px; margin-top: 15px; border: 2px solid #24B5C8;">
+                    <h3 style="font-family: 'Poppins', sans-serif; font-size: 15px; color: #24B5C8; margin-bottom: 10px;">Want to reach 85?</h3>
+                    <button class="calculate-btn" style="margin-top: 10px;" onclick="calculateNeededForGrade(85)">
+                        Calculate Score Needed for 85
+                    </button>
+                </div>
+
+                <div class="result-section" id="target-result" style="margin-top: 20px; background: white; color: #2c3e50; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <div style="padding: 20px; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6;" id="target-message"></div>
+                </div>
+            </div>
+        </div>
+        <!-- End What If Tab -->
+    
+    </div>
+
+    <!-- Footer Attribution - Below Calculator -->
+    <div style="text-align: center; margin-top: 16px; padding: 12px 20px; color: rgba(255, 255, 255, 0.9); font-size: 11px; max-width: 480px; margin-left: auto; margin-right: auto; font-family: 'Inter', sans-serif;">
+        <p style="margin: 4px 0;">
+            <strong>F.C. Diaz, RPsy</strong> | lifecareerskillsph
+        </p>
+        <p style="margin: 4px 0; opacity: 0.8;">
+            Based on DepEd Order No. 8 s. 2015 • <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" style="color: rgba(255, 255, 255, 0.9); text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.5);">CC BY 4.0</a>
+        </p>
+    </div>
+
+    <script>
+        // Transmutation Table based on DepEd DO s2015_08 Appendix B
+        const transmutationTable = [
+            { min: 98.40, max: 100, grade: 100 },
+            { min: 96.80, max: 98.39, grade: 99 },
+            { min: 95.20, max: 96.79, grade: 98 },
+            { min: 93.60, max: 95.19, grade: 97 },
+            { min: 92.00, max: 93.59, grade: 96 },
+            { min: 90.40, max: 91.99, grade: 95 },
+            { min: 88.80, max: 90.39, grade: 94 },
+            { min: 87.20, max: 88.79, grade: 93 },
+            { min: 85.60, max: 87.19, grade: 92 },
+            { min: 84.00, max: 85.59, grade: 91 },
+            { min: 82.40, max: 83.99, grade: 90 },
+            { min: 80.80, max: 82.39, grade: 89 },
+            { min: 79.20, max: 80.79, grade: 88 },
+            { min: 77.60, max: 79.19, grade: 87 },
+            { min: 76.00, max: 77.59, grade: 86 },
+            { min: 74.40, max: 75.99, grade: 85 },
+            { min: 72.80, max: 74.39, grade: 84 },
+            { min: 71.20, max: 72.79, grade: 83 },
+            { min: 69.60, max: 71.19, grade: 82 },
+            { min: 68.00, max: 69.59, grade: 81 },
+            { min: 66.40, max: 67.99, grade: 80 },
+            { min: 64.80, max: 66.39, grade: 79 },
+            { min: 63.20, max: 64.79, grade: 78 },
+            { min: 61.60, max: 63.19, grade: 77 },
+            { min: 60.00, max: 61.59, grade: 76 },
+            { min: 56.00, max: 59.99, grade: 75 },
+            { min: 52.00, max: 55.99, grade: 74 },
+            { min: 48.00, max: 51.99, grade: 73 },
+            { min: 44.00, max: 47.99, grade: 72 },
+            { min: 40.00, max: 43.99, grade: 71 },
+            { min: 36.00, max: 39.99, grade: 70 },
+            { min: 32.00, max: 35.99, grade: 69 },
+            { min: 28.00, max: 31.99, grade: 68 },
+            { min: 24.00, max: 27.99, grade: 67 },
+            { min: 20.00, max: 23.99, grade: 66 },
+            { min: 16.00, max: 19.99, grade: 65 },
+            { min: 12.00, max: 15.99, grade: 64 },
+            { min: 8.00, max: 11.99, grade: 63 },
+            { min: 4.00, max: 7.99, grade: 62 },
+            { min: 0.01, max: 3.99, grade: 61 },
+            { min: 0, max: 0, grade: 60 }
+        ];
+
+        function transmute(initialGrade) {
+            if (initialGrade === 100) return 100;
+            
+            for (let i = 0; i < transmutationTable.length; i++) {
+                if (initialGrade >= transmutationTable[i].min && initialGrade <= transmutationTable[i].max) {
+                    return transmutationTable[i].grade;
+                }
+            }
+            
+            return 60;
+        }
+
+        function getGradeDescriptor(grade) {
+            if (grade >= 90) return "Outstanding";
+            if (grade >= 85) return "Very Satisfactory";
+            if (grade >= 80) return "Satisfactory";
+            if (grade >= 75) return "Fairly Satisfactory";
+            return "Did Not Meet Expectations";
+        }
+
+        function validateInput(earnedId, totalId, errorEarnedId, errorTotalId) {
+            const earned = parseFloat(document.getElementById(earnedId).value) || 0;
+            const total = parseFloat(document.getElementById(totalId).value) || 0;
+            
+            let hasError = false;
+            
+            // Clear previous errors
+            document.getElementById(earnedId).classList.remove('error');
+            document.getElementById(totalId).classList.remove('error');
+            document.getElementById(errorEarnedId).classList.remove('show');
+            document.getElementById(errorTotalId).classList.remove('show');
+            
+            // Validate total points
+            if (total <= 0) {
+                document.getElementById(totalId).classList.add('error');
+                document.getElementById(errorTotalId).classList.add('show');
+                hasError = true;
+            }
+            
+            // Validate earned points
+            if (earned < 0) {
+                document.getElementById(earnedId).classList.add('error');
+                document.getElementById(errorEarnedId).textContent = "Points cannot be negative";
+                document.getElementById(errorEarnedId).classList.add('show');
+                hasError = true;
+            } else if (earned > total) {
+                document.getElementById(earnedId).classList.add('error');
+                document.getElementById(errorEarnedId).textContent = "Points earned cannot exceed total possible points";
+                document.getElementById(errorEarnedId).classList.add('show');
+                hasError = true;
+            }
+            
+            return !hasError;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        function calculateGrade() {
+            // Hide previous errors
+            document.getElementById('error-message').classList.remove('show');
+
+            // Validate all inputs
+            const wwValid = validateInput('ww-earned', 'ww-total', 'ww-earned-error', 'ww-total-error');
+            const ptValid = validateInput('pt-earned', 'pt-total', 'pt-earned-error', 'pt-total-error');
+            const qaValid = validateInput('qa-earned', 'qa-total', 'qa-earned-error', 'qa-total-error');
+
+            if (!wwValid || !ptValid || !qaValid) {
+                showError('Please correct the errors before calculating.');
+                return;
+            }
+
+            // Get values
+            const wwEarned = parseFloat(document.getElementById('ww-earned').value) || 0;
+            const wwTotal = parseFloat(document.getElementById('ww-total').value) || 0;
+            const ptEarned = parseFloat(document.getElementById('pt-earned').value) || 0;
+            const ptTotal = parseFloat(document.getElementById('pt-total').value) || 0;
+            const qaEarned = parseFloat(document.getElementById('qa-earned').value) || 0;
+            const qaTotal = parseFloat(document.getElementById('qa-total').value) || 0;
+
+            // Calculate percentage scores
+            const wwPercentage = (wwEarned / wwTotal) * 100;
+            const ptPercentage = (ptEarned / ptTotal) * 100;
+            const qaPercentage = (qaEarned / qaTotal) * 100;
+
+            // Calculate weighted scores (WW=25%, PT=50%, QA=25%)
+            const wwWeighted = wwPercentage * 0.25;
+            const ptWeighted = ptPercentage * 0.50;
+            const qaWeighted = qaPercentage * 0.25;
+
+            // Calculate initial grade
+            const initialGrade = wwWeighted + ptWeighted + qaWeighted;
+
+            // Transmute to get final grade
+            const transmutedGrade = transmute(initialGrade);
+            
+            // Get grade descriptor
+            const descriptor = getGradeDescriptor(transmutedGrade);
+
+            // Update quarter display
+            const quarter = document.getElementById('quarter-select').value;
+            document.getElementById('quarter-display').textContent = quarter;
+
+            // Display results
+            document.getElementById('ww-result').textContent = wwWeighted.toFixed(2);
+            document.getElementById('pt-result').textContent = ptWeighted.toFixed(2);
+            document.getElementById('qa-result').textContent = qaWeighted.toFixed(2);
+            document.getElementById('initial-grade').textContent = initialGrade.toFixed(2);
+            document.getElementById('final-grade').textContent = transmutedGrade;
+            document.getElementById('grade-descriptor').textContent = descriptor;
+
+            // Show result section
+            document.getElementById('result-section').classList.add('show');
+
+            // Show PDF download button
+            document.getElementById('pdf-btn').style.display = 'block';
+
+            // Scroll to results
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Tab switching function
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Toggle instructions
+        function toggleInstructions() {
+            const content = document.getElementById('instructions-content');
+            const btn = document.getElementById('toggle-btn');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                btn.innerHTML = 'Hide ▲';
+            } else {
+                content.style.display = 'none';
+                btn.innerHTML = 'Show ▼';
+            }
+        }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            const btn = document.getElementById('dark-mode-toggle');
+            
+            if (isDark) {
+                btn.innerHTML = '☀️ Light';
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                btn.innerHTML = '🌙 Dark';
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        }
+
+        // Load dark mode preference on page load
+        function loadDarkMode() {
+            const darkMode = localStorage.getItem('darkMode');
+            if (darkMode === 'enabled') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('dark-mode-toggle').innerHTML = '☀️ Light';
+            }
+        }
+
+        // Local Storage - Save inputs
+        function saveToLocalStorage() {
+            const data = {
+                // Calculator tab
+                quarter: document.getElementById('quarter-select').value,
+                wwEarned: document.getElementById('ww-earned').value,
+                wwTotal: document.getElementById('ww-total').value,
+                ptEarned: document.getElementById('pt-earned').value,
+                ptTotal: document.getElementById('pt-total').value,
+                qaEarned: document.getElementById('qa-earned').value,
+                qaTotal: document.getElementById('qa-total').value,
+                
+                // Transcript tab
+                q1: document.getElementById('q1-grade')?.value || '',
+                q2: document.getElementById('q2-grade')?.value || '',
+                q3: document.getElementById('q3-grade')?.value || '',
+                q4: document.getElementById('q4-grade')?.value || '',
+                
+                // What If tab
+                whatifWWEarned: document.getElementById('whatif-ww-earned')?.value || '',
+                whatifWWTotal: document.getElementById('whatif-ww-total')?.value || '',
+                whatifPTEarned: document.getElementById('whatif-pt-earned')?.value || '',
+                whatifPTTotal: document.getElementById('whatif-pt-total')?.value || '',
+                whatifQAEarned: document.getElementById('whatif-qa-earned')?.value || '',
+                whatifQATotal: document.getElementById('whatif-qa-total')?.value || ''
+            };
+            
+            localStorage.setItem('gradeCalculatorData', JSON.stringify(data));
+        }
+
+        // Local Storage - Load inputs
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('gradeCalculatorData');
+            if (!saved) return;
+            
+            try {
+                const data = JSON.parse(saved);
+                
+                // Calculator tab
+                if (data.quarter) document.getElementById('quarter-select').value = data.quarter;
+                if (data.wwEarned) document.getElementById('ww-earned').value = data.wwEarned;
+                if (data.wwTotal) document.getElementById('ww-total').value = data.wwTotal;
+                if (data.ptEarned) document.getElementById('pt-earned').value = data.ptEarned;
+                if (data.ptTotal) document.getElementById('pt-total').value = data.ptTotal;
+                if (data.qaEarned) document.getElementById('qa-earned').value = data.qaEarned;
+                if (data.qaTotal) document.getElementById('qa-total').value = data.qaTotal;
+                
+                // Transcript tab
+                if (data.q1 && document.getElementById('q1-grade')) document.getElementById('q1-grade').value = data.q1;
+                if (data.q2 && document.getElementById('q2-grade')) document.getElementById('q2-grade').value = data.q2;
+                if (data.q3 && document.getElementById('q3-grade')) document.getElementById('q3-grade').value = data.q3;
+                if (data.q4 && document.getElementById('q4-grade')) document.getElementById('q4-grade').value = data.q4;
+                
+                // What If tab
+                if (data.whatifWWEarned && document.getElementById('whatif-ww-earned')) 
+                    document.getElementById('whatif-ww-earned').value = data.whatifWWEarned;
+                if (data.whatifWWTotal && document.getElementById('whatif-ww-total')) 
+                    document.getElementById('whatif-ww-total').value = data.whatifWWTotal;
+                if (data.whatifPTEarned && document.getElementById('whatif-pt-earned')) 
+                    document.getElementById('whatif-pt-earned').value = data.whatifPTEarned;
+                if (data.whatifPTTotal && document.getElementById('whatif-pt-total')) 
+                    document.getElementById('whatif-pt-total').value = data.whatifPTTotal;
+                if (data.whatifQAEarned && document.getElementById('whatif-qa-earned')) 
+                    document.getElementById('whatif-qa-earned').value = data.whatifQAEarned;
+                if (data.whatifQATotal && document.getElementById('whatif-qa-total')) 
+                    document.getElementById('whatif-qa-total').value = data.whatifQATotal;
+                
+            } catch (e) {
+                console.error('Error loading saved data:', e);
+            }
+        }
+
+        // Auto-save on input change
+        function setupAutoSave() {
+            const inputs = document.querySelectorAll('input[type="number"], select');
+            inputs.forEach(input => {
+                input.addEventListener('change', saveToLocalStorage);
+                input.addEventListener('input', saveToLocalStorage);
+            });
+        }
+
+        // Sticky quarter selector enhancement
+        function setupStickySelector() {
+            const selector = document.querySelector('.quarter-selector');
+            if (!selector) return;
+            
+            let lastScroll = 0;
+            
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                
+                if (currentScroll > 100) {
+                    selector.classList.add('scrolled');
+                } else {
+                    selector.classList.remove('scrolled');
+                }
+                
+                lastScroll = currentScroll;
+            });
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            loadDarkMode();
+            loadFromLocalStorage();
+            setupAutoSave();
+            setupStickySelector();
+        });
+
+        // Calculate final grade (transcript average)
+        function calculateFinalGrade() {
+            const q1 = parseFloat(document.getElementById('q1-grade').value) || 0;
+            const q2 = parseFloat(document.getElementById('q2-grade').value) || 0;
+            const q3 = parseFloat(document.getElementById('q3-grade').value) || 0;
+            const q4 = parseFloat(document.getElementById('q4-grade').value) || 0;
+
+            // Validate at least one quarter is entered
+            if (q1 === 0 && q2 === 0 && q3 === 0 && q4 === 0) {
+                showError('Please enter at least one quarter grade.');
+                return;
+            }
+
+            // Calculate average
+            let count = 0;
+            let sum = 0;
+            if (q1 > 0) { sum += q1; count++; }
+            if (q2 > 0) { sum += q2; count++; }
+            if (q3 > 0) { sum += q3; count++; }
+            if (q4 > 0) { sum += q4; count++; }
+
+            const finalGrade = Math.round(sum / count);
+            const descriptor = getGradeDescriptor(finalGrade);
+
+            document.getElementById('final-grade-transcript').textContent = finalGrade;
+            document.getElementById('final-descriptor').textContent = descriptor;
+            document.getElementById('transcript-result').classList.add('show');
+
+            // Scroll to result
+            document.getElementById('transcript-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Calculate what-if scenario
+        function calculateWhatIf() {
+            const wwEarned = parseFloat(document.getElementById('whatif-ww-earned').value) || 0;
+            const wwTotal = parseFloat(document.getElementById('whatif-ww-total').value) || 25;
+            const ptEarned = parseFloat(document.getElementById('whatif-pt-earned').value) || 0;
+            const ptTotal = parseFloat(document.getElementById('whatif-pt-total').value) || 100;
+            const qaEarned = parseFloat(document.getElementById('whatif-qa-earned').value) || 0;
+            const qaTotal = parseFloat(document.getElementById('whatif-qa-total').value) || 60;
+
+            if (ptEarned === 0) {
+                showError('Please enter a simulated Performance Task score.');
+                return;
+            }
+
+            // Validate
+            if (wwTotal === 0 || ptTotal === 0 || qaTotal === 0) {
+                showError('Please ensure all total points are filled in.');
+                return;
+            }
+
+            if (wwEarned > wwTotal || ptEarned > ptTotal || qaEarned > qaTotal) {
+                showError('Earned points cannot exceed total points.');
+                return;
+            }
+
+            // Calculate
+            const wwPercentage = (wwEarned / wwTotal) * 100;
+            const ptPercentage = (ptEarned / ptTotal) * 100;
+            const qaPercentage = (qaEarned / qaTotal) * 100;
+
+            const wwWeighted = wwPercentage * 0.25;
+            const ptWeighted = ptPercentage * 0.50;
+            const qaWeighted = qaPercentage * 0.25;
+
+            const initialGrade = wwWeighted + ptWeighted + qaWeighted;
+            const transmutedGrade = transmute(initialGrade);
+            const descriptor = getGradeDescriptor(transmutedGrade);
+
+            document.getElementById('whatif-grade').textContent = initialGrade.toFixed(2);
+            document.getElementById('whatif-final-grade').textContent = transmutedGrade;
+            document.getElementById('whatif-descriptor').textContent = descriptor;
+            document.getElementById('whatif-result').classList.add('show');
+
+            // Scroll to result
+            document.getElementById('whatif-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Calculate needed score for target grade
+        function calculateNeededForGrade(targetGrade) {
+            const wwEarned = parseFloat(document.getElementById('whatif-ww-earned').value) || 0;
+            const wwTotal = parseFloat(document.getElementById('whatif-ww-total').value) || 25;
+            const qaEarned = parseFloat(document.getElementById('whatif-qa-earned').value) || 0;
+            const qaTotal = parseFloat(document.getElementById('whatif-qa-total').value) || 60;
+            const ptTotal = parseFloat(document.getElementById('whatif-pt-total').value) || 100;
+
+            if (wwTotal === 0 || ptTotal === 0 || qaTotal === 0) {
+                showError('Please fill in all total points first.');
+                return;
+            }
+
+            // Calculate current WW and QA weighted scores
+            const wwPercentage = (wwEarned / wwTotal) * 100;
+            const qaPercentage = (qaEarned / qaTotal) * 100;
+            const wwWeighted = wwPercentage * 0.25;
+            const qaWeighted = qaPercentage * 0.25;
+
+            // Find minimum initial grade needed for target transmuted grade
+            let minInitialGrade = 0;
+            for (let i = 0; i < transmutationTable.length; i++) {
+                if (transmutationTable[i].grade >= targetGrade) {
+                    minInitialGrade = transmutationTable[i].min;
+                }
+            }
+
+            // Calculate needed PT weighted score
+            const neededWeighted = minInitialGrade - wwWeighted - qaWeighted;
+            
+            // Convert to PT raw score
+            const neededPTPercentage = neededWeighted / 0.50;
+            const neededPTRaw = (neededPTPercentage / 100) * ptTotal;
+
+            const resultDiv = document.getElementById('target-result');
+            const messageDiv = document.getElementById('target-message');
+
+            if (neededPTRaw > ptTotal) {
+                messageDiv.innerHTML = `
+                    <p style="color: #e74c3c; font-weight: 600; margin-bottom: 10px;">⚠️ Not Achievable</p>
+                    <p>Based on your current Written Works and Quarterly Assessment scores, you would need <strong>${neededPTRaw.toFixed(2)} out of ${ptTotal}</strong> on Performance Tasks to reach a grade of <strong>${targetGrade}</strong>.</p>
+                    <p style="margin-top: 10px;">This exceeds the maximum possible score. You may need to:</p>
+                    <ul style="margin-top: 8px; margin-left: 20px;">
+                        <li>Improve your Written Works scores</li>
+                        <li>Score higher on the Quarterly Assessment</li>
+                        <li>Aim for a more realistic target grade</li>
+                    </ul>
+                `;
+            } else if (neededPTRaw < 0) {
+                messageDiv.innerHTML = `
+                    <p style="color: #4caf50; font-weight: 600; margin-bottom: 10px;">✓ Already Achieved!</p>
+                    <p>Great news! With your current Written Works and Quarterly Assessment scores, you've already secured a grade of <strong>${targetGrade} or higher</strong>, even without scoring on Performance Tasks.</p>
+                    <p style="margin-top: 10px; color: #7f8c8d;">Keep up the excellent work!</p>
+                `;
+            } else {
+                const percentage = ((neededPTRaw / ptTotal) * 100).toFixed(1);
+                messageDiv.innerHTML = `
+                    <p style="color: #24B5C8; font-weight: 600; margin-bottom: 10px;">📊 Score Needed</p>
+                    <p>To reach a final grade of <strong>${targetGrade}</strong>, you need to score:</p>
+                    <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center;">
+                        <div style="font-size: 24px; font-weight: 700; color: #24B5C8; font-family: 'Poppins', sans-serif;">${neededPTRaw.toFixed(2)} / ${ptTotal}</div>
+                        <div style="font-size: 14px; color: #7f8c8d; margin-top: 5px;">(${percentage}% on Performance Tasks)</div>
+                    </div>
+                    <p style="color: #7f8c8d; font-size: 13px;">This calculation is based on your current WW and QA scores.</p>
+                `;
+            }
+
+            resultDiv.classList.add('show');
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // PDF Download Function
+        function downloadPDF() {
+            const quarter = document.getElementById('quarter-select').value;
+            const wwEarned = document.getElementById('ww-earned').value;
+            const wwTotal = document.getElementById('ww-total').value;
+            const ptEarned = document.getElementById('pt-earned').value;
+            const ptTotal = document.getElementById('pt-total').value;
+            const qaEarned = document.getElementById('qa-earned').value;
+            const qaTotal = document.getElementById('qa-total').value;
+            
+            const finalGrade = document.getElementById('final-grade').textContent;
+            const descriptor = document.getElementById('grade-descriptor').textContent;
+            const initialGrade = document.getElementById('initial-grade').textContent;
+
+            const date = new Date().toLocaleDateString('en-PH', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+
+            // Create printable content
+            const printContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Quarter ${quarter} Grade Summary</title>
+                    <style>
+                        @page { margin: 0.75in; }
+                        body { 
+                            font-family: 'Arial', sans-serif; 
+                            line-height: 1.6;
+                            color: #333;
+                            max-width: 800px;
+                            margin: 0 auto;
+                        }
+                        .header { 
+                            text-align: center; 
+                            border-bottom: 3px solid #24B5C8; 
+                            padding-bottom: 20px; 
+                            margin-bottom: 30px;
+                        }
+                        .header h1 { 
+                            color: #2c3e50; 
+                            font-size: 24px;
+                            margin: 10px 0;
+                        }
+                        .grade-box {
+                            background: #f0f9ff;
+                            border: 3px solid #24B5C8;
+                            border-radius: 10px;
+                            padding: 20px;
+                            text-align: center;
+                            margin: 30px 0;
+                        }
+                        .grade-number {
+                            font-size: 48px;
+                            font-weight: bold;
+                            color: #24B5C8;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin: 20px 0;
+                        }
+                        th, td {
+                            border: 1px solid #ddd;
+                            padding: 12px;
+                            text-align: left;
+                        }
+                        th {
+                            background: #f8f9fa;
+                            font-weight: 600;
+                        }
+                        .footer {
+                            margin-top: 40px;
+                            padding-top: 20px;
+                            border-top: 2px solid #ddd;
+                            font-size: 12px;
+                            color: #7f8c8d;
+                            text-align: center;
+                        }
+                        .disclaimer {
+                            background: #fff3cd;
+                            border: 2px solid #ffc107;
+                            border-radius: 8px;
+                            padding: 15px;
+                            margin: 20px 0;
+                            font-size: 13px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>Life and Career Skills - Grade 11</h1>
+                        <p>Quarter ${quarter} Grade Summary</p>
+                        <p style="font-size: 14px; color: #7f8c8d;">${date}</p>
+                    </div>
+
+                    <div class="grade-box">
+                        <div style="font-size: 14px; color: #7f8c8d; margin-bottom: 10px;">QUARTER ${quarter} FINAL GRADE</div>
+                        <div class="grade-number">${finalGrade}</div>
+                        <div style="font-size: 18px; color: #34495e; font-weight: 600; margin-top: 10px;">${descriptor}</div>
+                    </div>
+
+                    <table>
+                        <tr>
+                            <th>Component</th>
+                            <th>Score</th>
+                            <th>Weight</th>
+                        </tr>
+                        <tr>
+                            <td>Written Works</td>
+                            <td>${wwEarned} / ${wwTotal}</td>
+                            <td>25%</td>
+                        </tr>
+                        <tr>
+                            <td>Performance Tasks</td>
+                            <td>${ptEarned} / ${ptTotal}</td>
+                            <td>50%</td>
+                        </tr>
+                        <tr>
+                            <td>Quarterly Assessment</td>
+                            <td>${qaEarned} / ${qaTotal}</td>
+                            <td>25%</td>
+                        </tr>
+                        <tr style="background: #f8f9fa; font-weight: 600;">
+                            <td>Initial Grade (Raw Weighted Average)</td>
+                            <td colspan="2">${initialGrade}</td>
+                        </tr>
+                        <tr style="background: #f0f9ff; font-weight: 600;">
+                            <td>Final Grade (Transmuted per DepEd DO 8 s. 2015)</td>
+                            <td colspan="2">${finalGrade}</td>
+                        </tr>
+                    </table>
+
+                    <div style="background: #f0f9ff; border: 2px solid #24B5C8; border-radius: 8px; padding: 15px; margin: 20px 0; font-size: 13px;">
+                        <strong>Transmutation Process:</strong> Your raw scores were calculated, weighted according to DepEd guidelines (WW=25%, PT=50%, QA=25%), then automatically transmuted using the official DepEd transmutation table (Appendix B) to produce the final grade shown above.
+                    </div>
+
+                    <div class="disclaimer">
+                        <strong>⚠️ Important Notice:</strong> This is a student-generated grade summary for reference purposes only. This does not replace official teacher computation or school records. Please verify with your teacher for official grades.
+                    </div>
+
+                    <div class="footer">
+                        <p><strong>Calculated using lifecareerskillsph Grade Calculator</strong></p>
+                        <p>Developed by F.C. Diaz, RPsy | Based on DepEd Order No. 8 s. 2015</p>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            // Open print dialog
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.focus();
+            
+            setTimeout(() => {
+                printWindow.print();
+            }, 250);
+        }
+
+        // Update header when quarter changes
+        document.getElementById('quarter-select').addEventListener('change', function() {
+            const quarter = this.value;
+            document.querySelector('.header h2').textContent = `Quarter ${quarter} Grade Calculator`;
+        });
+
+        // Allow Enter key to calculate
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                calculateGrade();
+            }
+        });
+
+        // Add real-time validation on input
+        ['ww', 'pt', 'qa'].forEach(prefix => {
+            document.getElementById(`${prefix}-earned`).addEventListener('input', function() {
+                validateInput(`${prefix}-earned`, `${prefix}-total`, `${prefix}-earned-error`, `${prefix}-total-error`);
+            });
+            document.getElementById(`${prefix}-total`).addEventListener('input', function() {
+                validateInput(`${prefix}-earned`, `${prefix}-total`, `${prefix}-earned-error`, `${prefix}-total-error`);
+            });
+        });
+    </script>
+</body>
+</html>
