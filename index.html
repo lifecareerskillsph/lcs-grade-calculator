@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LCS Grade Calculator - All Quarters</title>
+    <title>Life and Career Skills - Grade Calculator v1.1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,446 +14,687 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #24B5C8;
-            min-height: 100vh;
-            padding: 20px;
+        :root {
+            --bg-gradient-start: rgba(36, 181, 200, 0.85);
+            --bg-gradient-end: rgba(144, 134, 184, 0.85);
+            --bg-overlay: rgba(255, 255, 255, 0.1);
+            --container-bg: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #34495e;
+            --text-muted: #7f8c8d;
+            --border-color: #e0e0e0;
+            --section-bg: #f8f9fa;
+            --section-ww-bg: #f0f9ff;
+            --section-pt-bg: #fef3f2;
+            --section-qa-bg: #faf5ff;
+            --input-bg: white;
+            --shadow-color: rgba(0, 0, 0, 0.08);
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            padding: 30px;
+        body.dark-mode {
+            --bg-gradient-start: rgba(20, 30, 48, 0.95);
+            --bg-gradient-end: rgba(30, 20, 45, 0.95);
+            --bg-overlay: rgba(0, 0, 0, 0.3);
+            --container-bg: #1a1a2e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --text-muted: #8a8a8a;
+            --border-color: #2a2a3e;
+            --section-bg: #16213e;
+            --section-ww-bg: #1a2332;
+            --section-pt-bg: #2a1f1e;
+            --section-qa-bg: #221e2e;
+            --input-bg: #0f0f1e;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%), 
+                        linear-gradient(to bottom, var(--bg-overlay), rgba(255, 255, 255, 0.05));
+            background-blend-mode: normal, overlay;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        body.dark-mode {
+            color: var(--text-primary);
+        }
+
+        .calculator-container {
+            background: var(--container-bg);
+            border-radius: 20px;
+            box-shadow: 0px 4px 12px var(--shadow-color), 0px 8px 24px var(--shadow-color);
+            max-width: 100%;
+            width: 100%;
+            padding: 25px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        @media (min-width: 481px) {
+            .calculator-container {
+                max-width: 480px;
+                padding: 35px;
+                border-radius: 24px;
+            }
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            text-align: left;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 3px solid #24B5C8;
-            padding-bottom: 20px;
         }
 
         .header h1 {
-            color: #24B5C8;
-            font-size: 28px;
-            margin-bottom: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 22px;
+            margin: 0;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
         }
 
-        .header h2 {
-            color: #A64CA6;
-            font-size: 20px;
-            font-weight: normal;
+        @media (min-width: 481px) {
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+
+        .instruction-box {
+            background: var(--section-ww-bg);
+            border: 2px solid #bfe3f0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 25px;
+            transition: background 0.3s ease;
+        }
+
+        .instruction-box ol {
+            padding-left: 20px;
+        }
+
+        .instruction-box li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: #24B5C8;
+            background: rgba(36, 181, 200, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #24B5C8;
+            border-bottom-color: #24B5C8;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .quarter-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+            background: var(--section-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0px 2px 6px var(--shadow-color);
+            transition: all 0.3s ease;
         }
 
-        .quarter-btn {
-            padding: 12px 24px;
-            border: 2px solid #24B5C8;
-            background: white;
-            color: #24B5C8;
+        .quarter-selector label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-right: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .quarter-selector select {
+            padding: 10px 18px;
+            font-size: 15px;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
+            background: var(--input-bg);
+            color: var(--text-primary);
             cursor: pointer;
             transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
         }
 
-        .quarter-btn:hover {
-            background: #f0f0f0;
-        }
-
-        .quarter-btn.active {
-            background: #24B5C8;
-            color: white;
-        }
-
-        .form-section {
-            margin-bottom: 25px;
-        }
-
-        .form-section h3 {
-            color: #24B5C8;
-            margin-bottom: 15px;
-            font-size: 18px;
-            border-left: 4px solid #24B5C8;
-            padding-left: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .label-small {
-            font-size: 13px;
-            color: #666;
-            font-weight: normal;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        input:focus {
-            outline: none;
+        .quarter-selector select:hover {
             border-color: #24B5C8;
         }
 
-        .score-input-group {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 10px;
-            align-items: end;
+        .quarter-selector select:focus {
+            outline: none;
+            border-color: #24B5C8;
+            box-shadow: 0 0 0 3px rgba(36, 181, 200, 0.1);
         }
 
-        .score-inputs {
+        .section {
+            margin-bottom: 25px;
+            background: var(--section-bg);
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 5px solid #24B5C8;
+            box-shadow: 0px 2px 8px var(--shadow-color);
+            transition: background 0.3s ease;
+        }
+
+        .section.ww-section {
+            background: var(--section-ww-bg);
+            border-left-color: #24B5C8;
+        }
+
+        .section.pt-section {
+            background: var(--section-pt-bg);
+            border-left-color: #F28C28;
+        }
+
+        .section.qa-section {
+            background: var(--section-qa-bg);
+            border-left-color: #9086B8;
+        }
+
+        .section-header {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.05);
         }
 
-        .add-task-btn {
-            padding: 10px;
-            background: #A6B91A;
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 17px;
+        }
+
+        .section-weight {
+            background: #24B5C8;
             color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            color: var(--text-secondary);
+            font-weight: 500;
             font-size: 14px;
-            margin-top: 10px;
+            font-family: 'Inter', sans-serif;
+            display: block;
+            margin-bottom: 5px;
         }
 
-        .add-task-btn:hover {
-            background: #8fa115;
-        }
-
-        .remove-btn {
-            padding: 8px 12px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            height: 46px;
-        }
-
-        .remove-btn:hover {
-            background: #c82333;
-        }
-
-        button[type="submit"] {
+        .input-group input {
             width: 100%;
-            padding: 15px;
-            background: #F28C28;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #24B5C8;
+            box-shadow: 0 0 0 3px rgba(36, 181, 200, 0.1);
+        }
+
+        .input-group input.error {
+            border-color: #e74c3c;
+        }
+
+        .error-text {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .error-text.show {
+            display: block;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #24B5C8 0%, #9086B8 100%);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s;
             margin-top: 20px;
+            box-shadow: 0px 4px 12px rgba(36, 181, 200, 0.3);
         }
 
-        button[type="submit"]:hover {
+        .calculate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(242, 140, 40, 0.3);
-            background: #e07d1f;
+            box-shadow: 0 6px 18px rgba(36, 181, 200, 0.4);
         }
 
-        button[type="submit"]:active {
+        .calculate-btn:active {
             transform: translateY(0);
         }
 
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
+        .pdf-btn {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            color: #24B5C8;
+            border: 2px solid #24B5C8;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
         }
 
-        .results {
-            margin-top: 30px;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 10px;
+        .pdf-btn:hover {
+            background: #24B5C8;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .result-section {
+            margin-top: 25px;
+            background: linear-gradient(135deg, #24B5C8 0%, #9086B8 100%);
+            padding: 22px;
+            border-radius: 16px;
+            color: white;
             display: none;
-            border: 1px solid #e0e0e0;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .results.show {
+        .result-section.show {
             display: block;
         }
 
         .result-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px;
-            margin-bottom: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .final-grade-display {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .result-label {
-            font-weight: 500;
-            color: #555;
-        }
-
-        .result-value {
-            font-weight: bold;
-            color: #24B5C8;
-        }
-
-        .final-grade {
-            background: #24B5C8;
-            color: white;
-            font-size: 20px;
-            padding: 20px;
+            color: #2c3e50;
+            padding: 28px;
+            border-radius: 16px;
             text-align: center;
+            margin-top: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .final-grade-number {
+            font-size: 52px;
+            font-weight: 700;
+            color: #24B5C8;
+            line-height: 1;
+            margin: 12px 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .final-grade-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .final-grade-descriptor {
+            font-size: 16px;
+            color: #34495e;
+            font-weight: 600;
+            margin-top: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .error-message {
+            background: #fff5f5;
+            border: 2px solid #feb2b2;
+            color: #c53030;
+            padding: 12px 16px;
             border-radius: 10px;
-            margin-top: 15px;
-        }
-
-        .error {
-            color: #e74c3c;
-            font-size: 14px;
-            margin-top: 5px;
+            margin-bottom: 20px;
             display: none;
-        }
-
-        .note {
-            background: #fffbea;
-            border-left: 4px solid #FFD633;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
             font-size: 14px;
-            color: #7a6b1a;
+            font-family: 'Inter', sans-serif;
         }
 
-        .success-message {
-            background: #e8f5e0;
-            border-left: 4px solid #A6B91A;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
-            color: #4a5c1a;
-            display: none;
-        }
-
-        .success-message.show {
+        .error-message.show {
             display: block;
         }
 
-        .loading {
-            text-align: center;
-            padding: 10px;
-            color: #24B5C8;
-            display: none;
-        }
-
-        .loading.show {
-            display: block;
-        }
-
-        .weight-info {
-            background: #f3f1f8;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: #9086B8;
-            border-left: 3px solid #9086B8;
-        }
-
-        @media (max-width: 600px) {
-            .score-input-group {
-                grid-template-columns: 1fr;
-            }
-            
-            .quarter-selector {
-                flex-direction: column;
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
             }
 
-            .quarter-btn {
-                width: 100%;
+            .calculator-container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .final-grade-number {
+                font-size: 42px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="calculator-container">
         <div class="header">
-            <h1>LIFE CAREER SKILLS (LCS)</h1>
-            <h2>Quarterly Grade Calculator</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h1>Life and Career Skills<br>Grade 11 — Grade Calculator</h1>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button onclick="toggleDarkMode()" id="dark-mode-toggle" style="background: #e0e0e0; color: #5a5a5a; padding: 6px 12px; border: none; border-radius: 12px; font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s;">
+                        🌙 Dark
+                    </button>
+                    <span style="background: #e0e0e0; color: #5a5a5a; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif;">v1.1</span>
+                </div>
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px; font-family: 'Inter', sans-serif;">
+                This calculator helps you estimate your grade based on your current scores.
+            </p>
         </div>
 
-        <div class="quarter-selector">
-            <button type="button" class="quarter-btn active" onclick="selectQuarter(1)">1st Quarter</button>
-            <button type="button" class="quarter-btn" onclick="selectQuarter(2)">2nd Quarter</button>
-            <button type="button" class="quarter-btn" onclick="selectQuarter(3)">3rd Quarter</button>
-            <button type="button" class="quarter-btn" onclick="selectQuarter(4)">4th Quarter</button>
+        <!-- Instruction Box -->
+        <div class="instruction-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3 style="font-family: 'Poppins', sans-serif; font-size: 15px; color: var(--text-primary); margin: 0;">Quick Instructions</h3>
+                <button onclick="toggleInstructions()" style="background: none; border: none; color: #24B5C8; cursor: pointer; font-size: 14px; font-weight: 600; font-family: 'Inter', sans-serif;" id="toggle-btn">
+                    Show ▼
+                </button>
+            </div>
+            <div id="instructions-content" style="display: none; margin-top: 15px;">
+                <ol style="margin-left: 20px; line-height: 1.8; font-size: 14px; font-family: 'Inter', sans-serif;">
+                    <li>Select your quarter (1-4)</li>
+                    <li>Enter your raw scores for each category</li>
+                    <li>You may adjust the total possible points</li>
+                    <li>Click "Calculate Quarter Grade"</li>
+                    <li>The calculator will automatically transmute your grade using DepEd's official table</li>
+                </ol>
+            </div>
         </div>
 
-        <form id="gradeForm">
-            <input type="hidden" id="selectedQuarter" value="1">
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" onclick="switchTab('calculator')">Grade Calculator</button>
+            <button class="tab-btn" onclick="switchTab('transcript')">Final Grade</button>
+            <button class="tab-btn" onclick="switchTab('whatif')">What If?</button>
+        </div>
 
-            <div class="form-section">
-                <h3>Student Information</h3>
-                <div class="form-group">
-                    <label for="fullName">Full Name (Last Name, First Name M.I.)</label>
-                    <input type="text" id="fullName" required placeholder="Dela Cruz, Juan P.">
+        <!-- Calculator Tab -->
+        <div id="calculator-tab" class="tab-content active">
+            <div class="quarter-selector">
+                <label for="quarter-select">Select Quarter:</label>
+                <select id="quarter-select">
+                    <option value="1">Quarter 1</option>
+                    <option value="2">Quarter 2</option>
+                    <option value="3">Quarter 3</option>
+                    <option value="4">Quarter 4</option>
+                </select>
+            </div>
+
+            <div class="error-message" id="error-message"></div>
+
+            <!-- Written Works -->
+            <div class="section ww-section">
+                <div class="section-header">
+                    <span class="section-title">Written Works</span>
+                    <span class="section-weight">25%</span>
                 </div>
-                <div class="form-group">
-                    <label for="studentId">Student ID Number</label>
-                    <input type="text" id="studentId" required placeholder="2024-12345">
+                <div class="input-group">
+                    <label>Total Points Earned:</label>
+                    <input type="number" id="ww-earned" min="0" step="0.01" placeholder="Enter points earned">
+                    <span class="error-text" id="ww-earned-error">Invalid score</span>
                 </div>
-                <div class="form-group">
-                    <label for="gradeSection">Grade & Section</label>
-                    <input type="text" id="gradeSection" required placeholder="Grade 11 - Humility">
+                <div class="input-group">
+                    <label>Total Possible Points:</label>
+                    <input type="number" id="ww-total" min="0" step="0.01" value="25" placeholder="Default: 25">
+                    <span class="error-text" id="ww-total-error">Must be greater than 0</span>
                 </div>
             </div>
 
-            <div class="form-section">
-                <h3>Written Work (WW) - 25%</h3>
-                <div class="weight-info">
-                    Weight: 25% | Enter each task score and its maximum possible score
+            <!-- Performance Tasks -->
+            <div class="section pt-section">
+                <div class="section-header">
+                    <span class="section-title">Performance Tasks</span>
+                    <span class="section-weight">50%</span>
                 </div>
-                <div id="wwContainer" class="score-inputs">
-                    <div class="score-input-group">
-                        <div>
-                            <label>Task 1 <span class="label-small">(Score / Max Score)</span></label>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                <input type="number" class="ww-score" min="0" step="0.5" required placeholder="Score" data-index="0">
-                                <input type="number" class="ww-max" min="1" step="0.5" required placeholder="Max" data-index="0">
-                            </div>
-                        </div>
-                        <button type="button" class="remove-btn" onclick="removeWW(0)" style="display: none;">Remove</button>
+                <div class="input-group">
+                    <label>Total Points Earned:</label>
+                    <input type="number" id="pt-earned" min="0" step="0.01" placeholder="Enter points earned">
+                    <span class="error-text" id="pt-earned-error">Invalid score</span>
+                </div>
+                <div class="input-group">
+                    <label>Total Possible Points:</label>
+                    <input type="number" id="pt-total" min="0" step="0.01" value="100" placeholder="Default: 100">
+                    <span class="error-text" id="pt-total-error">Must be greater than 0</span>
+                </div>
+            </div>
+
+            <!-- Quarterly Assessment -->
+            <div class="section qa-section">
+                <div class="section-header">
+                    <span class="section-title">Quarterly Assessment</span>
+                    <span class="section-weight">25%</span>
+                </div>
+                <div class="input-group">
+                    <label>Points Earned:</label>
+                    <input type="number" id="qa-earned" min="0" step="0.01" placeholder="Enter points earned">
+                    <span class="error-text" id="qa-earned-error">Invalid score</span>
+                </div>
+                <div class="input-group">
+                    <label>Total Possible Points:</label>
+                    <input type="number" id="qa-total" min="0" step="0.01" value="60" placeholder="Usually 60 points total">
+                    <span class="error-text" id="qa-total-error">Must be greater than 0</span>
+                </div>
+            </div>
+
+            <button class="calculate-btn" onclick="calculateGrade()">Calculate Quarter Grade</button>
+
+            <div class="result-section" id="result-section">
+                <div class="result-item">
+                    <span>Written Works (25%):</span>
+                    <span id="ww-result">0.00</span>
+                </div>
+                <div class="result-item">
+                    <span>Performance Tasks (50%):</span>
+                    <span id="pt-result">0.00</span>
+                </div>
+                <div class="result-item">
+                    <span>Quarterly Assessment (25%):</span>
+                    <span id="qa-result">0.00</span>
+                </div>
+                <div class="result-item">
+                    <span>Initial Grade (Raw):</span>
+                    <span id="initial-grade">0.00</span>
+                </div>
+                
+                <div class="final-grade-display">
+                    <div class="final-grade-label">Quarter <span id="quarter-display">1</span> Final Grade</div>
+                    <div class="final-grade-number" id="final-grade">0</div>
+                    <div class="final-grade-descriptor" id="grade-descriptor">Not Yet Calculated</div>
+                </div>
+            </div>
+
+            <button class="pdf-btn" onclick="downloadPDF()" id="pdf-btn" style="display: none;">
+                📄 Download PDF Summary
+            </button>
+        </div>
+
+        <!-- Final Grade Tab -->
+        <div id="transcript-tab" class="tab-content">
+            <div class="section ww-section">
+                <div class="section-header">
+                    <span class="section-title">Final Grade Calculator</span>
+                </div>
+                
+                <div class="input-group">
+                    <label>Quarter 1 Grade:</label>
+                    <input type="number" id="q1-grade" min="60" max="100" step="1" placeholder="Enter Q1 grade (60-100)">
+                </div>
+                <div class="input-group">
+                    <label>Quarter 2 Grade:</label>
+                    <input type="number" id="q2-grade" min="60" max="100" step="1" placeholder="Enter Q2 grade (60-100)">
+                </div>
+                <div class="input-group">
+                    <label>Quarter 3 Grade:</label>
+                    <input type="number" id="q3-grade" min="60" max="100" step="1" placeholder="Enter Q3 grade (60-100)">
+                </div>
+                <div class="input-group">
+                    <label>Quarter 4 Grade:</label>
+                    <input type="number" id="q4-grade" min="60" max="100" step="1" placeholder="Enter Q4 grade (60-100)">
+                </div>
+
+                <button class="calculate-btn" onclick="calculateFinalGrade()">Calculate Final Grade</button>
+
+                <div class="result-section" id="transcript-result">
+                    <div class="final-grade-display">
+                        <div class="final-grade-label">Final Grade (Average)</div>
+                        <div class="final-grade-number" id="final-grade-transcript">0</div>
+                        <div class="final-grade-descriptor" id="final-descriptor">Not Yet Calculated</div>
                     </div>
                 </div>
-                <button type="button" class="add-task-btn" onclick="addWW()">+ Add Another Task</button>
             </div>
+        </div>
 
-            <div class="form-section">
-                <h3>Performance Task (PeTa) - 50%</h3>
-                <div class="weight-info">
-                    Weight: 50% | Enter each task score and its maximum possible score
+        <!-- What If Tab -->
+        <div id="whatif-tab" class="tab-content">
+            <div class="section pt-section">
+                <div class="section-header">
+                    <span class="section-title">What If? Calculator</span>
                 </div>
-                <div id="petaContainer" class="score-inputs">
-                    <div class="score-input-group">
-                        <div>
-                            <label>Task 1 <span class="label-small">(Score / Max Score)</span></label>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                <input type="number" class="peta-score" min="0" step="0.5" required placeholder="Score" data-index="0">
-                                <input type="number" class="peta-max" min="1" step="0.5" required placeholder="Max" data-index="0">
-                            </div>
-                        </div>
-                        <button type="button" class="remove-btn" onclick="removePeTa(0)" style="display: none;">Remove</button>
-                    </div>
-                </div>
-                <button type="button" class="add-task-btn" onclick="addPeTa()">+ Add Another Task</button>
-            </div>
 
-            <div class="form-section">
-                <h3>Quarterly Assessment (QA) - 25%</h3>
-                <div class="weight-info">
-                    Weight: 25% | Enter exam score and maximum possible score
-                </div>
-                <div class="form-group">
-                    <label>Quarterly Exam <span class="label-small">(Score / Max Score)</span></label>
+                <div class="input-group">
+                    <label>Written Works Earned / Total:</label>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <input type="number" id="qaScore" min="0" step="0.5" required placeholder="Score">
-                        <input type="number" id="qaMax" min="1" step="0.5" required placeholder="Max Score">
+                        <input type="number" id="whatif-ww-earned" min="0" step="0.01" placeholder="Earned">
+                        <input type="number" id="whatif-ww-total" min="0" step="0.01" value="25" placeholder="Total">
                     </div>
                 </div>
-            </div>
 
-            <button type="submit" id="submitBtn">Calculate Grade</button>
-            <div class="loading" id="loading">Saving your record...</div>
-        </form>
+                <div class="input-group">
+                    <label>Performance Task Earned / Total:</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="number" id="whatif-pt-earned" min="0" step="0.01" placeholder="Earned">
+                        <input type="number" id="whatif-pt-total" min="0" step="0.01" value="100" placeholder="Total">
+                    </div>
+                </div>
 
-        <div class="success-message" id="successMessage">
-            ✓ Your grade has been calculated and recorded successfully!
-        </div>
+                <div class="input-group">
+                    <label>Quarterly Assessment Earned / Total:</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="number" id="whatif-qa-earned" min="0" step="0.01" placeholder="Earned">
+                        <input type="number" id="whatif-qa-total" min="0" step="0.01" value="60" placeholder="Total">
+                    </div>
+                </div>
 
-        <div class="results" id="results">
-            <h3 style="color: #24B5C8; margin-bottom: 15px; text-align: center;">Grade Computation Results</h3>
-            
-            <div class="result-item">
-                <span class="result-label">Written Work (WW) PS:</span>
-                <span class="result-value" id="psWW">0.00</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Written Work (WW) WS:</span>
-                <span class="result-value" id="wsWW">0.00</span>
-            </div>
-            
-            <div class="result-item">
-                <span class="result-label">Performance Task (PeTa) PS:</span>
-                <span class="result-value" id="psPeTa">0.00</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Performance Task (PeTa) WS:</span>
-                <span class="result-value" id="wsPeTa">0.00</span>
-            </div>
-            
-            <div class="result-item">
-                <span class="result-label">Quarterly Assessment (QA) PS:</span>
-                <span class="result-value" id="psQA">0.00</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Quarterly Assessment (QA) WS:</span>
-                <span class="result-value" id="wsQA">0.00</span>
-            </div>
+                <button class="calculate-btn" onclick="calculateWhatIf()">Calculate "What If?" Grade</button>
 
-            <div class="final-grade">
-                <div style="font-size: 16px; margin-bottom: 10px;">INITIAL GRADE</div>
-                <div style="font-size: 32px; font-weight: bold;" id="initialGrade">0.00</div>
-            </div>
+                <div class="result-section" id="whatif-result">
+                    <div class="final-grade-display">
+                        <div class="final-grade-label">Your Grade Would Be</div>
+                        <div class="final-grade-number" id="whatif-final-grade">0</div>
+                        <div class="final-grade-descriptor" id="whatif-descriptor">Not Yet Calculated</div>
+                    </div>
+                </div>
 
-            <div class="final-grade" style="background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);">
-                <div style="font-size: 16px; margin-bottom: 10px;">TRANSMUTED GRADE</div>
-                <div style="font-size: 32px; font-weight: bold;" id="transmutedGrade">60</div>
-            </div>
-        </div>
+                <div style="margin-top: 20px;">
+                    <button class="calculate-btn" style="background: linear-gradient(135deg, #9086B8 0%, #A64CA6 100%);" onclick="calculateNeededForGrade(75)">
+                        Calculate Score Needed for 75
+                    </button>
+                </div>
 
-        <div class="note">
-            <strong>Note:</strong> This calculator uses the official DepEd Order No. 8, s. 2015 transmutation table. 
-            Your information and grades are automatically saved to the teacher's record.
+                <div class="result-section" id="target-result" style="background: white; color: #2c3e50;">
+                    <div style="padding: 20px; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6;" id="target-message"></div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- Footer -->
+    <div style="text-align: center; margin-top: 16px; padding: 12px 20px; color: rgba(255, 255, 255, 0.9); font-size: 11px; max-width: 480px; margin-left: auto; margin-right: auto; font-family: 'Inter', sans-serif;">
+        <p style="margin: 4px 0;">
+            <strong>F.C. Diaz, RPsy</strong> | lifecareerskillsph
+        </p>
+        <p style="margin: 4px 0; opacity: 0.8;">
+            Based on DepEd Order No. 8 s. 2015 • <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" style="color: rgba(255, 255, 255, 0.9); text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.5);">CC BY 4.0</a>
+        </p>
+    </div>
+
     <script>
-        // ⚠️ REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
-        const SCRIPT_URL = 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE';
-
-        let wwCount = 1;
-        let petaCount = 1;
-
-        // Transmutation table - DepEd Order No. 8, s. 2015 (OFFICIAL)
+        // Transmutation Table - DepEd Order No. 8 s. 2015
         const transmutationTable = [
             { min: 100, max: 100, grade: 100 },
             { min: 98.4, max: 99.99, grade: 99 },
@@ -495,100 +739,6 @@
             { min: 0, max: 3.99, grade: 60 }
         ];
 
-        function selectQuarter(quarter) {
-            document.getElementById('selectedQuarter').value = quarter;
-            
-            // Update button states
-            const buttons = document.querySelectorAll('.quarter-btn');
-            buttons.forEach((btn, index) => {
-                if (index + 1 === quarter) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-        }
-
-        function addWW() {
-            const container = document.getElementById('wwContainer');
-            const div = document.createElement('div');
-            div.className = 'score-input-group';
-            div.innerHTML = `
-                <div>
-                    <label>Task ${wwCount + 1} <span class="label-small">(Score / Max Score)</span></label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <input type="number" class="ww-score" min="0" step="0.5" required placeholder="Score" data-index="${wwCount}">
-                        <input type="number" class="ww-max" min="1" step="0.5" required placeholder="Max" data-index="${wwCount}">
-                    </div>
-                </div>
-                <button type="button" class="remove-btn" onclick="removeWW(${wwCount})">Remove</button>
-            `;
-            container.appendChild(div);
-            wwCount++;
-            updateRemoveButtons();
-        }
-
-        function removeWW(index) {
-            const container = document.getElementById('wwContainer');
-            const groups = container.querySelectorAll('.score-input-group');
-            if (groups.length > 1) {
-                groups[index].remove();
-                updateRemoveButtons();
-            }
-        }
-
-        function addPeTa() {
-            const container = document.getElementById('petaContainer');
-            const div = document.createElement('div');
-            div.className = 'score-input-group';
-            div.innerHTML = `
-                <div>
-                    <label>Task ${petaCount + 1} <span class="label-small">(Score / Max Score)</span></label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <input type="number" class="peta-score" min="0" step="0.5" required placeholder="Score" data-index="${petaCount}">
-                        <input type="number" class="peta-max" min="1" step="0.5" required placeholder="Max" data-index="${petaCount}">
-                    </div>
-                </div>
-                <button type="button" class="remove-btn" onclick="removePeTa(${petaCount})">Remove</button>
-            `;
-            container.appendChild(div);
-            petaCount++;
-            updateRemoveButtons();
-        }
-
-        function removePeTa(index) {
-            const container = document.getElementById('petaContainer');
-            const groups = container.querySelectorAll('.score-input-group');
-            if (groups.length > 1) {
-                groups[index].remove();
-                updateRemoveButtons();
-            }
-        }
-
-        function updateRemoveButtons() {
-            // Show/hide remove buttons for WW
-            const wwGroups = document.querySelectorAll('#wwContainer .score-input-group');
-            wwGroups.forEach((group, index) => {
-                const removeBtn = group.querySelector('.remove-btn');
-                if (wwGroups.length > 1) {
-                    removeBtn.style.display = 'block';
-                } else {
-                    removeBtn.style.display = 'none';
-                }
-            });
-
-            // Show/hide remove buttons for PeTa
-            const petaGroups = document.querySelectorAll('#petaContainer .score-input-group');
-            petaGroups.forEach((group, index) => {
-                const removeBtn = group.querySelector('.remove-btn');
-                if (petaGroups.length > 1) {
-                    removeBtn.style.display = 'block';
-                } else {
-                    removeBtn.style.display = 'none';
-                }
-            });
-        }
-
         function transmute(initialGrade) {
             for (let range of transmutationTable) {
                 if (initialGrade >= range.min && initialGrade <= range.max) {
@@ -598,121 +748,283 @@
             return 60;
         }
 
-        async function saveToGoogleSheets(data) {
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-                return true;
-            } catch (error) {
-                console.error('Error saving to Google Sheets:', error);
-                return false;
+        function getGradeDescriptor(grade) {
+            if (grade >= 90) return "Outstanding";
+            if (grade >= 85) return "Very Satisfactory";
+            if (grade >= 80) return "Satisfactory";
+            if (grade >= 75) return "Fairly Satisfactory";
+            return "Did Not Meet Expectations";
+        }
+
+        function validateInput(earnedId, totalId, errorEarnedId, errorTotalId) {
+            const earned = parseFloat(document.getElementById(earnedId).value) || 0;
+            const total = parseFloat(document.getElementById(totalId).value) || 0;
+            
+            document.getElementById(earnedId).classList.remove('error');
+            document.getElementById(totalId).classList.remove('error');
+            document.getElementById(errorEarnedId).classList.remove('show');
+            document.getElementById(errorTotalId).classList.remove('show');
+            
+            let hasError = false;
+            
+            if (total <= 0) {
+                document.getElementById(totalId).classList.add('error');
+                document.getElementById(errorTotalId).classList.add('show');
+                hasError = true;
+            }
+            
+            if (earned < 0 || earned > total) {
+                document.getElementById(earnedId).classList.add('error');
+                document.getElementById(errorEarnedId).textContent = `Score must be between 0 and ${total}`;
+                document.getElementById(errorEarnedId).classList.add('show');
+                hasError = true;
+            }
+            
+            return !hasError;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => errorDiv.classList.remove('show'), 3000);
+        }
+
+        function calculateGrade() {
+            const wwValid = validateInput('ww-earned', 'ww-total', 'ww-earned-error', 'ww-total-error');
+            const ptValid = validateInput('pt-earned', 'pt-total', 'pt-earned-error', 'pt-total-error');
+            const qaValid = validateInput('qa-earned', 'qa-total', 'qa-earned-error', 'qa-total-error');
+
+            if (!wwValid || !ptValid || !qaValid) {
+                showError('Please correct the errors before calculating.');
+                return;
+            }
+
+            const wwEarned = parseFloat(document.getElementById('ww-earned').value) || 0;
+            const wwTotal = parseFloat(document.getElementById('ww-total').value) || 0;
+            const ptEarned = parseFloat(document.getElementById('pt-earned').value) || 0;
+            const ptTotal = parseFloat(document.getElementById('pt-total').value) || 0;
+            const qaEarned = parseFloat(document.getElementById('qa-earned').value) || 0;
+            const qaTotal = parseFloat(document.getElementById('qa-total').value) || 0;
+
+            const wwPercentage = (wwEarned / wwTotal) * 100;
+            const ptPercentage = (ptEarned / ptTotal) * 100;
+            const qaPercentage = (qaEarned / qaTotal) * 100;
+
+            const wwWeighted = wwPercentage * 0.25;
+            const ptWeighted = ptPercentage * 0.50;
+            const qaWeighted = qaPercentage * 0.25;
+
+            const initialGrade = wwWeighted + ptWeighted + qaWeighted;
+            const transmutedGrade = transmute(initialGrade);
+            const descriptor = getGradeDescriptor(transmutedGrade);
+
+            const quarter = document.getElementById('quarter-select').value;
+            document.getElementById('quarter-display').textContent = quarter;
+
+            document.getElementById('ww-result').textContent = wwWeighted.toFixed(2);
+            document.getElementById('pt-result').textContent = ptWeighted.toFixed(2);
+            document.getElementById('qa-result').textContent = qaWeighted.toFixed(2);
+            document.getElementById('initial-grade').textContent = initialGrade.toFixed(2);
+            document.getElementById('final-grade').textContent = transmutedGrade;
+            document.getElementById('grade-descriptor').textContent = descriptor;
+
+            document.getElementById('result-section').classList.add('show');
+            document.getElementById('pdf-btn').style.display = 'block';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function toggleInstructions() {
+            const content = document.getElementById('instructions-content');
+            const btn = document.getElementById('toggle-btn');
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                btn.innerHTML = 'Hide ▲';
+            } else {
+                content.style.display = 'none';
+                btn.innerHTML = 'Show ▼';
             }
         }
 
-        document.getElementById('gradeForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            const btn = document.getElementById('dark-mode-toggle');
+            btn.innerHTML = isDark ? '☀️ Light' : '🌙 Dark';
+            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        }
 
-            // Get student info
-            const quarter = document.getElementById('selectedQuarter').value;
-            const fullName = document.getElementById('fullName').value;
-            const studentId = document.getElementById('studentId').value;
-            const gradeSection = document.getElementById('gradeSection').value;
+        function loadDarkMode() {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('dark-mode-toggle').innerHTML = '☀️ Light';
+            }
+        }
 
-            // Calculate Written Work
-            const wwScores = document.querySelectorAll('.ww-score');
-            const wwMaxes = document.querySelectorAll('.ww-max');
-            let totalWWScore = 0;
-            let totalWWMax = 0;
-            
-            wwScores.forEach((input, index) => {
-                totalWWScore += parseFloat(input.value) || 0;
-                totalWWMax += parseFloat(wwMaxes[index].value) || 0;
-            });
+        function calculateFinalGrade() {
+            const q1 = parseFloat(document.getElementById('q1-grade').value) || 0;
+            const q2 = parseFloat(document.getElementById('q2-grade').value) || 0;
+            const q3 = parseFloat(document.getElementById('q3-grade').value) || 0;
+            const q4 = parseFloat(document.getElementById('q4-grade').value) || 0;
 
-            const psWW = totalWWMax > 0 ? (totalWWScore / totalWWMax) * 100 : 0;
-            const wsWW = psWW * 0.25;
+            if (q1 === 0 && q2 === 0 && q3 === 0 && q4 === 0) {
+                showError('Please enter at least one quarter grade.');
+                return;
+            }
 
-            // Calculate Performance Task
-            const petaScores = document.querySelectorAll('.peta-score');
-            const petaMaxes = document.querySelectorAll('.peta-max');
-            let totalPeTaScore = 0;
-            let totalPeTaMax = 0;
-            
-            petaScores.forEach((input, index) => {
-                totalPeTaScore += parseFloat(input.value) || 0;
-                totalPeTaMax += parseFloat(petaMaxes[index].value) || 0;
-            });
+            let count = 0, sum = 0;
+            if (q1 > 0) { sum += q1; count++; }
+            if (q2 > 0) { sum += q2; count++; }
+            if (q3 > 0) { sum += q3; count++; }
+            if (q4 > 0) { sum += q4; count++; }
 
-            const psPeTa = totalPeTaMax > 0 ? (totalPeTaScore / totalPeTaMax) * 100 : 0;
-            const wsPeTa = psPeTa * 0.50;
+            const finalGrade = Math.round(sum / count);
+            const descriptor = getGradeDescriptor(finalGrade);
 
-            // Calculate Quarterly Assessment
-            const qaScore = parseFloat(document.getElementById('qaScore').value) || 0;
-            const qaMax = parseFloat(document.getElementById('qaMax').value) || 0;
-            const psQA = qaMax > 0 ? (qaScore / qaMax) * 100 : 0;
-            const wsQA = psQA * 0.25;
+            document.getElementById('final-grade-transcript').textContent = finalGrade;
+            document.getElementById('final-descriptor').textContent = descriptor;
+            document.getElementById('transcript-result').classList.add('show');
+            document.getElementById('transcript-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
 
-            // Calculate Initial Grade
-            const initialGrade = wsWW + wsPeTa + wsQA;
+        function calculateWhatIf() {
+            const wwEarned = parseFloat(document.getElementById('whatif-ww-earned').value) || 0;
+            const wwTotal = parseFloat(document.getElementById('whatif-ww-total').value) || 25;
+            const ptEarned = parseFloat(document.getElementById('whatif-pt-earned').value) || 0;
+            const ptTotal = parseFloat(document.getElementById('whatif-pt-total').value) || 100;
+            const qaEarned = parseFloat(document.getElementById('whatif-qa-earned').value) || 0;
+            const qaTotal = parseFloat(document.getElementById('whatif-qa-total').value) || 60;
 
-            // Get Transmuted Grade
+            const wwPercentage = (wwEarned / wwTotal) * 100;
+            const ptPercentage = (ptEarned / ptTotal) * 100;
+            const qaPercentage = (qaEarned / qaTotal) * 100;
+
+            const initialGrade = (wwPercentage * 0.25) + (ptPercentage * 0.50) + (qaPercentage * 0.25);
             const transmutedGrade = transmute(initialGrade);
+            const descriptor = getGradeDescriptor(transmutedGrade);
 
-            // Display results
-            document.getElementById('psWW').textContent = psWW.toFixed(2);
-            document.getElementById('wsWW').textContent = wsWW.toFixed(2);
-            document.getElementById('psPeTa').textContent = psPeTa.toFixed(2);
-            document.getElementById('wsPeTa').textContent = wsPeTa.toFixed(2);
-            document.getElementById('psQA').textContent = psQA.toFixed(2);
-            document.getElementById('wsQA').textContent = wsQA.toFixed(2);
-            document.getElementById('initialGrade').textContent = initialGrade.toFixed(2);
-            document.getElementById('transmutedGrade').textContent = transmutedGrade;
+            document.getElementById('whatif-final-grade').textContent = transmutedGrade;
+            document.getElementById('whatif-descriptor').textContent = descriptor;
+            document.getElementById('whatif-result').classList.add('show');
+            document.getElementById('whatif-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
 
-            // Show results
-            document.getElementById('results').classList.add('show');
+        function calculateNeededForGrade(targetGrade) {
+            const wwEarned = parseFloat(document.getElementById('whatif-ww-earned').value) || 0;
+            const wwTotal = parseFloat(document.getElementById('whatif-ww-total').value) || 25;
+            const qaEarned = parseFloat(document.getElementById('whatif-qa-earned').value) || 0;
+            const qaTotal = parseFloat(document.getElementById('whatif-qa-total').value) || 60;
+            const ptTotal = parseFloat(document.getElementById('whatif-pt-total').value) || 100;
 
-            // Save to Google Sheets
-            document.getElementById('submitBtn').disabled = true;
-            document.getElementById('loading').classList.add('show');
+            const wwWeighted = ((wwEarned / wwTotal) * 100) * 0.25;
+            const qaWeighted = ((qaEarned / qaTotal) * 100) * 0.25;
 
-            const timestamp = new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' });
-            
-            const data = {
-                timestamp: timestamp,
-                quarter: quarter,
-                fullName: fullName,
-                studentId: studentId,
-                gradeSection: gradeSection,
-                wwTotalScore: totalWWScore,
-                wwTotalMax: totalWWMax,
-                petaTotalScore: totalPeTaScore,
-                petaTotalMax: totalPeTaMax,
-                qaScore: qaScore,
-                qaMax: qaMax,
-                psWW: psWW.toFixed(2),
-                wsWW: wsWW.toFixed(2),
-                psPeTa: psPeTa.toFixed(2),
-                wsPeTa: wsPeTa.toFixed(2),
-                psQA: psQA.toFixed(2),
-                wsQA: wsQA.toFixed(2),
-                initialGrade: initialGrade.toFixed(2),
-                transmutedGrade: transmutedGrade
-            };
+            let minInitialGrade = 0;
+            for (let range of transmutationTable) {
+                if (range.grade >= targetGrade) {
+                    minInitialGrade = range.min;
+                }
+            }
 
-            await saveToGoogleSheets(data);
+            const neededPTWeighted = minInitialGrade - wwWeighted - qaWeighted;
+            const neededPTPercentage = neededPTWeighted / 0.50;
+            const neededPTRaw = (neededPTPercentage / 100) * ptTotal;
 
-            document.getElementById('loading').classList.remove('show');
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('successMessage').classList.add('show');
+            const messageDiv = document.getElementById('target-message');
+            if (neededPTRaw > ptTotal) {
+                messageDiv.innerHTML = `<p style="color: #e74c3c; font-weight: 600;">⚠️ Not Achievable</p><p>You would need ${neededPTRaw.toFixed(2)} out of ${ptTotal} on Performance Tasks to reach ${targetGrade}. This exceeds the maximum possible score.</p>`;
+            } else if (neededPTRaw < 0) {
+                messageDiv.innerHTML = `<p style="color: #4caf50; font-weight: 600;">✓ Already Achieved!</p><p>You've already secured a grade of ${targetGrade} or higher with your current scores!</p>`;
+            } else {
+                const percentage = ((neededPTRaw / ptTotal) * 100).toFixed(1);
+                messageDiv.innerHTML = `<p style="color: #24B5C8; font-weight: 600;">📊 Score Needed</p><p>To reach ${targetGrade}, you need: <strong>${neededPTRaw.toFixed(2)} / ${ptTotal}</strong> (${percentage}%) on Performance Tasks</p>`;
+            }
 
-            // Scroll to results
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            document.getElementById('target-result').classList.add('show');
+            document.getElementById('target-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function downloadPDF() {
+            const quarter = document.getElementById('quarter-select').value;
+            const wwEarned = document.getElementById('ww-earned').value;
+            const wwTotal = document.getElementById('ww-total').value;
+            const ptEarned = document.getElementById('pt-earned').value;
+            const ptTotal = document.getElementById('pt-total').value;
+            const qaEarned = document.getElementById('qa-earned').value;
+            const qaTotal = document.getElementById('qa-total').value;
+            const finalGrade = document.getElementById('final-grade').textContent;
+            const descriptor = document.getElementById('grade-descriptor').textContent;
+            const initialGrade = document.getElementById('initial-grade').textContent;
+            const date = new Date().toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            const printContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Quarter ${quarter} Grade Summary</title>
+                    <style>
+                        @page { margin: 0.75in; }
+                        body { font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; }
+                        .header { text-align: center; border-bottom: 3px solid #24B5C8; padding-bottom: 20px; margin-bottom: 30px; }
+                        .header h1 { color: #2c3e50; font-size: 24px; margin: 10px 0; }
+                        .grade-box { background: #f0f9ff; border: 3px solid #24B5C8; border-radius: 10px; padding: 20px; text-align: center; margin: 30px 0; }
+                        .grade-number { font-size: 48px; font-weight: bold; color: #24B5C8; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+                        th { background: #f8f9fa; font-weight: 600; }
+                        .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd; font-size: 12px; color: #7f8c8d; text-align: center; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>Life and Career Skills - Grade 11</h1>
+                        <p>Quarter ${quarter} Grade Summary</p>
+                        <p style="font-size: 14px; color: #7f8c8d;">${date}</p>
+                    </div>
+                    <div class="grade-box">
+                        <div style="font-size: 14px; color: #7f8c8d; margin-bottom: 10px;">QUARTER ${quarter} FINAL GRADE</div>
+                        <div class="grade-number">${finalGrade}</div>
+                        <div style="font-size: 18px; color: #34495e; font-weight: 600; margin-top: 10px;">${descriptor}</div>
+                    </div>
+                    <table>
+                        <tr><th>Component</th><th>Score</th><th>Weight</th></tr>
+                        <tr><td>Written Works</td><td>${wwEarned} / ${wwTotal}</td><td>25%</td></tr>
+                        <tr><td>Performance Tasks</td><td>${ptEarned} / ${ptTotal}</td><td>50%</td></tr>
+                        <tr><td>Quarterly Assessment</td><td>${qaEarned} / ${qaTotal}</td><td>25%</td></tr>
+                        <tr style="background: #f8f9fa; font-weight: 600;"><td>Initial Grade</td><td colspan="2">${initialGrade}</td></tr>
+                        <tr style="background: #f0f9ff; font-weight: 600;"><td>Final Grade</td><td colspan="2">${finalGrade}</td></tr>
+                    </table>
+                    <div class="footer">
+                        <p><strong>lifecareerskillsph Grade Calculator</strong></p>
+                        <p>F.C. Diaz, RPsy | Based on DepEd Order No. 8 s. 2015</p>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => printWindow.print(), 250);
+        }
+
+        window.addEventListener('DOMContentLoaded', loadDarkMode);
+
+        ['ww', 'pt', 'qa'].forEach(prefix => {
+            document.getElementById(`${prefix}-earned`).addEventListener('input', function() {
+                validateInput(`${prefix}-earned`, `${prefix}-total`, `${prefix}-earned-error`, `${prefix}-total-error`);
+            });
+            document.getElementById(`${prefix}-total`).addEventListener('input', function() {
+                validateInput(`${prefix}-earned`, `${prefix}-total`, `${prefix}-earned-error`, `${prefix}-total-error`);
+            });
         });
     </script>
 </body>
